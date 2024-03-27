@@ -1,12 +1,12 @@
 # Yamadai-Syllabus2CSV
-山形大学のシラバスをCSVにまとめるスクリプト
-ベースURLは`https://www.yamagata-u.ac.jp/gakumu/syllabus/{年度}/`
+山形大学のシラバスのURLをCSVにまとめるスクリプト\
+ベースURL:`https://www.yamagata-u.ac.jp/gakumu/syllabus/{年度}/`に続くように相対URLをcsvファイルに出力します。\
+csvファイルは学部毎に`講義番号,url`の形をしています。\
 
-学部毎に"講義番号, url"の形をしたcsvファイルを取得できます。
-シラバスは2016年度以前には非対応
+シラバスは2016年度以降のシラバスに対応
 
 
-## How to Use 
+## Usage 
 poetryを使用してmain.pyを実行してください\
 ex)
 `poetry run python3 main.py -y 2024 -d my_dir`
