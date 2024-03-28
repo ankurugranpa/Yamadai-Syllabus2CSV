@@ -9,7 +9,7 @@ class GetUrlList():
 
     '''
     return Atag URL List
-    ex)List[atag, atag2, atag3]
+    ex)List[AtagUrl, AtagUrl2, AtagUrl3]
     '''
     def GetAtagList(self, target_url:str) -> list:
         try:
@@ -21,7 +21,7 @@ class GetUrlList():
                 atags = soup.find_all('a')
                 if atags:
                     for atag in atags:
-                        href = atag.get("href")
+                        href = "/" + atag.get("href") 
                         result.append(href)
                 return result
 
@@ -33,8 +33,8 @@ class GetUrlList():
             return None
 
     '''
-    return Atag URL List[tapple]
-    ex)List[(text, atag), (text2, atag2), (text3, atag3)]
+    return Atag URL List[Tapple]
+    ex)List[(text, AtagUrl), (text2, AtagUrl2), (text3, AtagUrl3)]
     '''
 
     def GetAtagListText(self, target_url:str) -> list:
@@ -47,7 +47,7 @@ class GetUrlList():
                 atags = soup.find_all('a')
                 if atags:
                     for atag in atags:
-                        buf = atag.get_text(), atag.get("href"), 
+                        buf = atag.get_text(), self.base_url + "/" + atag.get("href"), 
                         result.append(buf)
                 return result
 
