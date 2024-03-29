@@ -7,7 +7,6 @@ class GetElement():
     """Get syllubus detail
    Args:
     url: syllubus url
-    year:  target year
 
     - This is Syllubus Struct -
     +------------+
@@ -20,9 +19,8 @@ class GetElement():
         class_num
     """
 
-    def __init__(self, url, year):
+    def __init__(self, url):
         self.url = url
-        self.year = year
         response = requests.get(self.url)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -99,10 +97,10 @@ if __name__ == "__main__":
     year = 2024
     class_list = []
 
-    test = GetElement(url, year)
-    test2 = GetElement(url2, year)
-    test3 = GetElement(url3, year)
-    test4 = GetElement(url4, 2016)
+    test = GetElement(url)
+    test2 = GetElement(url2)
+    test3 = GetElement(url3)
+    test4 = GetElement(url4)
 
     for item in test3.GetTitle():
         print(item)
