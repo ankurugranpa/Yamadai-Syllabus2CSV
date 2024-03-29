@@ -2,18 +2,22 @@ import re
 
 import requests
 from bs4 import BeautifulSoup
-    
-
-    
-
-
 
 class GetElement():
     """Get syllubus detail
-   
    Args:
     url: syllubus url
     year:  target year
+
+    - This is Syllubus Struct -
+    +------------+
+    | ClassTitle |
+    +------------+
+    |  overview  |
+    +------------+
+    |   detail   |
+    +------------+
+        class_num
     """
 
     def __init__(self, url, year):
@@ -23,68 +27,23 @@ class GetElement():
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
             self.element_list = soup.find_all('td')
-        TAGLIST = ["授業名",
-                       "ClassName",
-                       "担当教員",
-                       "担当教員の所属",
-                       "担当教員の実務経験の有無",
-                       "開講学年",
-                       "開講学期",
-                       "単位数",
-                       "開講形態",
-                       "開講対象",
-                       "科目区分"]
 
-        TAGLISTOPTONAL = ["授業名",
-                       "ClassName",
-                       "担当教員",
-                       "担当教員の所属",
-                       "担当教員の実務経験の有無",
-                       "担当教員の実務経験の内容",
-                       "開講学年",
-                       "開講学期",
-                       "単位数",
-                       "開講形態",
-                       "開講対象",
-                       "科目区分"]
-        self.tag_list = TAGLIST
-        self.tag_list_op = TAGLISTOPTONAL
+
+    def GetTitle(self) -> tuple:
+        span_list = self.element_list[1].find_all('span')
+        tupple_buf = span_list[0].get_text(), span_list[1].get_text()
+        return tupple_buf
     
 
-    """
-    Args:
-        ov_list: list of overview
-    """
     def GetOverview(self) -> list:
         ov_list = []
-        span_list = self.element_list[1].find_all('span')
         btag_list = self.element_list[1].find_all('b')
 
-        if(len(btag_list) == 9):
-            # print("test")
-            for i in range(9+2):
-                if (i < 2):
-                    buf = self.tag_list[i], span_list[i].get_text()
-                    ov_list.append(buf)
-                else:
-                    # buf = self.tag_list[i], btag_list[i-2].get_text()
-                    buf = self.tag_list[i], self.element_list[1].find('b', string=f'{btag_list[i-2].get_text()}').next_sibling.strip()
-                    ov_list.append(buf)
-
-
-        elif(len(btag_list) == 10):
-            for i in range(10+2):
-                if (i < 2):
-                    buf = self.tag_list[i], span_list[i].get_text()
-                    ov_list.append(buf)
-                else:
-                    buf = self.tag_list_op[i], self.element_list[1].find('b', string=f'{btag_list[i-2].get_text()}').next_sibling.strip()
-                    ov_list.append(buf)
-        else:
-            print("EROER")
+        for  item in btag_list:
+            buf = item.get_text().lstrip("\u3000").rstrip("："), item.find_next_sibling(string=True).strip()
+            ov_list.append(buf)
 
         return ov_list
-
 
 
     def GetDetail(self) -> list:
@@ -101,7 +60,7 @@ class GetElement():
                 if btag_list[i].find_next_sibling('div') != btag_list[i+1].find_next_sibling('div') \
                         and i < len(btag_list)-1 :
                     title_html = btag_list[i]
-                    title = title_html.get_text()
+                    title = title_html.get_text().lstrip("【").rstrip("】")
                     content = title_html.find_next_sibling('div').get_text().lstrip("\n")
                     tupple_buf = "", content
                     content_list.append(tupple_buf)
@@ -127,7 +86,12 @@ class GetElement():
 
         return detail_list
 
+    def GetClassNum(self) -> int:
+        return int(self.element_list[4].get_text().split("-")[-1])
+
+
 if __name__ == "__main__":
+    # test code
     url = "https://www.yamagata-u.ac.jp/gakumu/syllabus/2024/html/05_55950.html"
     url2 = "https://www.yamagata-u.ac.jp/gakumu/syllabus/2024/html/05_52556.html"
     url3 = "https://www.yamagata-u.ac.jp/gakumu/syllabus/2024/html/05_55001.html"
@@ -139,16 +103,13 @@ if __name__ == "__main__":
     test2 = GetElement(url2, year)
     test3 = GetElement(url3, year)
     test4 = GetElement(url4, 2016)
-    test.GetOverview()
-    test2.GetOverview()
-    test3.GetOverview()
-    # test3.GetDetail()
-    sample_list = test4.GetDetail()
-    # print(sample_list)
-    for item in sample_list:
-        print(item)
-        print("\n")
 
-    # print(test.GetOverview())
-    print(test2.GetOverview())
-    # print(test3.GetOverview())
+    for item in test3.GetTitle():
+        print(item)
+
+    for item in test3.GetOverview():
+        print(item)
+
+    for item in test3.GetDetail():
+        print(item)
+    print(test3.GetClassNum())
