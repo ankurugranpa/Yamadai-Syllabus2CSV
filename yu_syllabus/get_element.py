@@ -107,8 +107,11 @@ class GetElement():
     def GetSubTitleSize(self) -> int:
         size = 0
         for i in range(self.GetTitleSize()):
-            if len(self.GetDetail()[i][1]) > 1:
-                size += len(self.GetDetail()[i][1]) 
+            for j in range(len(self.GetDetail()[i][1])):
+                if self.GetDetail()[i][1][j][0] != "":
+                    size += 1
+                    print(self.GetDetail()[i][1][j][0])
+
 
         return size
 
