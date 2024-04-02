@@ -5,9 +5,8 @@ import argparse
 
 args = sys.argv
 
-
-from lib.GetUrlList import GetUrlList as GetUrlList
-from lib.FacultyDict import FacultyDict
+from yu_syllabus.GetUrlList import GetUrlList as GetUrlList
+from yu_syllabus.FacultyDict import FacultyDict
 
 
 
