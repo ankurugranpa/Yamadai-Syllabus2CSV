@@ -7,11 +7,14 @@ class GetUrlList():
         self.base_url = f"https://www.yamagata-u.ac.jp/gakumu/syllabus/{self.year}"
 
 
-    '''
-    return Atag URL List
-    ex)List[AtagUrl, AtagUrl2, AtagUrl3]
-    '''
     def GetAtagList(self, target_url:str) -> list:
+        """
+        Args:
+        target_url: relative url
+
+        return Atag URL List
+        ex)List[AtagUrl, AtagUrl2, AtagUrl3]
+        """
         try:
             result = []
             abs_target_url = self.base_url + target_url 
@@ -32,12 +35,15 @@ class GetUrlList():
             print("An error occurred:", str(e))
             return None
 
-    '''
-    return Atag URL List[Tapple]
-    ex)List[(text, AtagUrl), (text2, AtagUrl2), (text3, AtagUrl3)]
-    '''
 
     def GetAtagListText(self, target_url:str) -> list:
+        """
+        Args:
+        target_url: relative url
+
+        return Atag URL List[Tapple]
+        ex)List[(text, AtagUrl), (text2, AtagUrl2), (text3, AtagUrl3)]
+        """
         try:
             result = []
             abs_target_url = self.base_url + target_url 
