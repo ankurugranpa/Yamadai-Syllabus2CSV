@@ -1,1 +1,0 @@
-from syllabus import *
