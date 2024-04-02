@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "yamadai-syllabus2csv"
+name = "yu-syllabus"
 version = "0.1.0"
 description = ""
 authors = ["ankuru <ankuru.ahahahaha@gmail.com>"]
