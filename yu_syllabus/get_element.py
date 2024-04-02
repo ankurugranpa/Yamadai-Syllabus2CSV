@@ -110,7 +110,6 @@ class GetElement():
             for j in range(len(self.GetDetail()[i][1])):
                 if self.GetDetail()[i][1][j][0] != "":
                     size += 1
-                    print(self.GetDetail()[i][1][j][0])
 
 
         return size
