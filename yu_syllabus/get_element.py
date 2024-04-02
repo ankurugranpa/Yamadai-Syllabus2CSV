@@ -23,6 +23,7 @@ class GetElement():
         self.url = url
         self.__cash_detail_list:list = None
         self.__cash_title_size:int = None
+        self.__cash_overview_list:list = None
         response = requests.get(self.url)
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -36,14 +37,20 @@ class GetElement():
     
 
     def GetOverview(self) -> list:
-        ov_list = []
-        btag_list = self.element_list[1].find_all('b')
+        if self.__cash_overview_list is None:
+            ov_list = []
+            btag_list = self.element_list[1].find_all('b')
 
-        for  item in btag_list:
-            buf = item.get_text().lstrip("\u3000").rstrip("："), item.find_next_sibling(string=True).strip()
-            ov_list.append(buf)
+            for  item in btag_list:
+                buf = item.get_text().lstrip("\u3000").rstrip("："), item.find_next_sibling(string=True).strip()
+                ov_list.append(buf)
+            self.__cash_overview_list = ov_list
 
-        return ov_list
+        return self.__cash_overview_list
+
+
+    def GetOvSize(self) -> int:
+        return len(self.GetOverview())
 
 
     def GetDetail(self) -> list:
